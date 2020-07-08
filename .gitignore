@@ -41,3 +41,6 @@ app.*.map.json
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+assets/fonts/Anton-Regular.ttf
+assets/fonts/Lato-Bold.ttf
+assets/fonts/Lato-Regular.ttf
