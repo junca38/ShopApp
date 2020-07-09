@@ -1,8 +1,7 @@
-import 'package:ShopApp/models/product.dart';
+import 'package:ShopApp/provider/product.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
-class ProductProvider with ChangeNotifier {
+class Products with ChangeNotifier {
   List<Product> _items = [
     Product(
       id: 'p1',
@@ -42,7 +41,12 @@ class ProductProvider with ChangeNotifier {
     return [..._items];
   }
 
+  Product findById(String id) {
+    return _items.firstWhere((item) => item.id == id);
+  }
+
   void addProduct(Product value) {
+    _items.add(value);
     notifyListeners();
   }
 }
