@@ -16,7 +16,7 @@ class CartItem {
 }
 
 class Cart with ChangeNotifier {
-  //String is the Id
+  //String is the ID, cart
   Map<String, CartItem> _items = {};
 
   Map<String, CartItem> get items {
@@ -55,6 +55,11 @@ class Cart with ChangeNotifier {
             price: price),
       );
     }
+    notifyListeners();
+  }
+
+  void removeItem(String productId) {
+    _items.remove(productId);
     notifyListeners();
   }
 }
