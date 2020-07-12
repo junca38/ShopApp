@@ -53,18 +53,25 @@ class Products with ChangeNotifier {
     return _items.firstWhere((item) => item.id == id);
   }
 
+  // Not used, due to it being global, while we only need in local widget
   // void showFavoritesOnly() {
   //   _showFavoriteOnly = true;
   //   notifyListeners();
   // }
-
   // void showAll() {
   //   _showFavoriteOnly = false;
   //   notifyListeners();
   // }
 
-  void addProduct(Product value) {
-    _items.add(value);
+  void addProduct(Product product) {
+    final newProduct = Product(
+      id: DateTime.now().toString(),
+      title: product.title,
+      description: product.description,
+      price: product.price,
+      imageUrl: product.imageUrl,
+    );
+    _items.add(newProduct);
     notifyListeners();
   }
 }

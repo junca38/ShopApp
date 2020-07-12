@@ -1,6 +1,8 @@
 import 'package:ShopApp/provider/product.dart';
+import 'package:ShopApp/provider/products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product';
@@ -35,6 +37,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
     if (!isValid) return;
     //only run when isValid
     _form.currentState.save();
+    context.read<Products>().addProduct(_editedProduct);
+    Navigator.of(context).pop();
   }
 
   @override
