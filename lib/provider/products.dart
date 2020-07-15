@@ -66,7 +66,7 @@ class Products with ChangeNotifier {
   // }
 
   Future<void> addProduct(Product product) {
-    const url = 'https://simpleshopping-613e3.firebaseio.com/';
+    const url = 'https://simpleshopping-613e3.firebaseio.com/products.json';
     return http
         .post(url,
             body: json.encode({
@@ -85,6 +85,8 @@ class Products with ChangeNotifier {
           imageUrl: product.imageUrl);
       _items.add(newProduct);
       notifyListeners();
+    }).catchError((error) {
+      throw error;
     });
   }
 

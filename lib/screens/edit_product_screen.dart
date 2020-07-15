@@ -52,7 +52,21 @@ class _EditProductScreenState extends State<EditProductScreen> {
       setState(() => _isLoading = false);
       Navigator.of(context).pop();
     } else {
-      context.read<Products>().addProduct(_editedProduct).then((_) {
+      context.read<Products>().addProduct(_editedProduct).catchError((error) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Error'),
+            content: Text('Error on adding product.'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('OK'),
+                onPressed: () => Navigator.of(context).pop,
+              ),
+            ],
+          ),
+        );
+      }).then((_) {
         setState(() => _isLoading = false);
         Navigator.of(context).pop();
       });
@@ -106,9 +120,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         ],
       ),
       body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
+          ? Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
