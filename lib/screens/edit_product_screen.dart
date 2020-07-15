@@ -40,7 +40,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     final isValid = _form.currentState.validate();
     if (!isValid) return;
     //only run the following when isValid
@@ -52,8 +52,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
       setState(() => _isLoading = false);
       Navigator.of(context).pop();
     } else {
-      context.read<Products>().addProduct(_editedProduct).catchError((error) {
-        showDialog(
+      try {
+        await context.read<Products>().addProduct(_editedProduct);
+      } catch (error) {
+        await showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Error'),
@@ -66,10 +68,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
             ],
           ),
         );
-      }).then((_) {
+      } finally {
         setState(() => _isLoading = false);
         Navigator.of(context).pop();
-      });
+      }
     }
     //Navigator.of(context).pop();
   }
