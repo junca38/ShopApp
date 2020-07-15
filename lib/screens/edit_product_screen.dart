@@ -46,8 +46,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _form.currentState.save();
     if (_editedProduct.id != null) {
       context.read<Products>().updateProduct(_editedProduct.id, _editedProduct);
-    } else
+    } else {
       context.read<Products>().addProduct(_editedProduct);
+    }
     Navigator.of(context).pop();
   }
 
