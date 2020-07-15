@@ -65,9 +65,9 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) {
     const url = 'https://simpleshopping-613e3.firebaseio.com/';
-    http
+    return http
         .post(url,
             body: json.encode({
               'title': product.title,
