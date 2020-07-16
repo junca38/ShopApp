@@ -46,11 +46,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
     //only run the following when isValid
     _form.currentState.save();
     setState(() => _isLoading = true);
-
     if (_editedProduct.id != null) {
-      context.read<Products>().updateProduct(_editedProduct.id, _editedProduct);
-      setState(() => _isLoading = false);
-      Navigator.of(context).pop();
+      try {
+        await context
+            .read<Products>()
+            .updateProduct(_editedProduct.id, _editedProduct);
+      } catch (e) {
+        print('Update error');
+      }
     } else {
       try {
         await context.read<Products>().addProduct(_editedProduct);
@@ -68,11 +71,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
             ],
           ),
         );
-      } finally {
-        setState(() => _isLoading = false);
-        Navigator.of(context).pop();
       }
+      // finally {
+      //   setState(() => _isLoading = false);
+      //   Navigator.of(context).pop();
+      // }
     }
+    setState(() => _isLoading = false);
+    Navigator.of(context).pop();
     //Navigator.of(context).pop();
   }
 

@@ -1,3 +1,4 @@
+import 'package:ShopApp/models/http_exception.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ShopApp/provider/product.dart';
 import 'package:http/http.dart' as http;
@@ -118,17 +119,40 @@ class Products with ChangeNotifier {
     // });
   }
 
-  void updateProduct(String id, Product newProduct) {
+  Future<void> updateProduct(String id, Product newProduct) async {
     final foundIndex = _items.indexWhere((product) => product.id == id);
     if (foundIndex >= 0) {
+      final url =
+          'https://simpleshopping-613e3.firebaseio.com/products/$id.json';
+      try {
+        await http.patch(url,
+            body: jsonEncode({
+              'title': newProduct.title,
+              'description': newProduct.description,
+              'price': newProduct.price,
+              'imageUrl': newProduct.imageUrl,
+            }));
+      } catch (e) {
+        throw e;
+      }
       _items[foundIndex] = newProduct;
       notifyListeners();
     } else
       print('Update Error!');
   }
 
-  void deleteProduct(String id) {
-    _items.removeWhere((product) => product.id == id);
+  Future<void> deleteProduct(String id) async {
+    final url = 'https://simpleshopping-613e3.firebaseio.com/products/$id.json';
+    final tobeDeletedIndex = _items.indexWhere((product) => product.id == id);
+    var tobeDeletedItem = _items[tobeDeletedIndex];
+    _items.removeAt(tobeDeletedIndex);
     notifyListeners();
+    final response = await http.delete(url);
+    if (response.statusCode >= 400) {
+      _items.insert(tobeDeletedIndex, tobeDeletedItem);
+      notifyListeners();
+      throw HttpException(errorMsg: "Could not delete Product.");
+    }
+    tobeDeletedItem = null;
   }
 }
