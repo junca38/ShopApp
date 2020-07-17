@@ -11,6 +11,8 @@ import 'package:provider/provider.dart';
 import 'package:ShopApp/provider/cart.dart';
 import 'package:ShopApp/provider/orders.dart';
 
+import 'package:ShopApp/screens/auth_screen.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -32,7 +34,9 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => ProductOverviewScreen(),
+          '/': (context) => AuthScreen(),
+          AuthScreen.routeName: (context) => AuthScreen(),
+          ProductOverviewScreen.routeName: (context) => ProductOverviewScreen(),
           ProductDetailScreen.routeName: (context) => ProductDetailScreen(),
           CartScreen.routeName: (context) => CartScreen(),
           OrderScreen.routeName: (context) => OrderScreen(),
