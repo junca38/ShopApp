@@ -1,4 +1,5 @@
 import 'package:ShopApp/models/http_exception.dart';
+import 'package:ShopApp/provider/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ShopApp/provider/product.dart';
 import 'package:http/http.dart' as http;
@@ -6,9 +7,11 @@ import 'dart:convert';
 
 class Products with ChangeNotifier {
   String authToken;
+  String userId;
 
-  update(String auth, List<Product> tempItem) {
-    authToken = auth;
+  update(String token, String id, List<Product> tempItem) {
+    authToken = token;
+    userId = id;
     _items = tempItem;
   }
 
@@ -77,11 +80,16 @@ class Products with ChangeNotifier {
   Future<void> fetchAndSetProduct() async {
     final url =
         'https://simpleshopping-613e3.firebaseio.com/products.json?auth=$authToken';
+    final favoriteUrl =
+        'https://simpleshopping-613e3.firebaseio.com/userFavorite/$userId.json?auth=$authToken';
     try {
       final response = await http.get(url);
       //print(json.decode(response.body));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       if (extractedData == null) return;
+
+      final favoriteResponse = await http.get(favoriteUrl);
+      final favoriteData = jsonDecode(favoriteResponse.body);
       final List<Product> loadedProducts = [];
       extractedData.forEach((productId, productData) {
         loadedProducts.add(Product(
@@ -90,7 +98,8 @@ class Products with ChangeNotifier {
           description: productData['description'],
           imageUrl: productData['imageUrl'],
           price: productData['price'],
-          isFavorite: productData['isFavorite'],
+          isFavorite:
+              favoriteData == null ? false : favoriteData[productId] ?? false,
         ));
       });
       _items = loadedProducts;
@@ -110,7 +119,7 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
-            'isFavorite': product.isFavorite,
+            //'isFavorite': product.isFavorite,
           }));
       final newProduct = Product(
           id: json.decode(response.body)['name'],

@@ -19,15 +19,14 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  Future<void> toggleFavoriteStatus(String authToken) async {
+  Future<void> toggleFavoriteStatus(String authToken, String userId) async {
     final storeFavorite = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
     final url =
-        "https://simpleshopping-613e3.firebaseio.com/products/$id.json?auth=$authToken";
+        "https://simpleshopping-613e3.firebaseio.com/userFavorite/$userId/$id.json?auth=$authToken";
     try {
-      final response =
-          await http.patch(url, body: jsonEncode({'isFavorite': isFavorite}));
+      final response = await http.put(url, body: jsonEncode(isFavorite));
       if (response.statusCode >= 400) {}
     } catch (e) {
       isFavorite = storeFavorite;
