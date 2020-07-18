@@ -10,6 +10,8 @@ import 'package:ShopApp/widgets/badge_widget.dart';
 enum FilterOptions { Favorites, All }
 
 class ProductOverviewScreen extends StatefulWidget {
+  static const routeName = '/product-overview';
+
   @override
   _ProductOverviewScreenState createState() => _ProductOverviewScreenState();
 }

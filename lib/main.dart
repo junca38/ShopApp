@@ -1,3 +1,4 @@
+import 'package:ShopApp/provider/auth.dart';
 import 'package:ShopApp/screens/cart_screen.dart';
 import 'package:ShopApp/screens/edit_product_screen.dart';
 import 'package:ShopApp/screens/order_screen.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<Products>.value(value: Products()),
         ChangeNotifierProvider<Cart>.value(value: Cart()),
         ChangeNotifierProvider<Orders>.value(value: Orders()),
+        ChangeNotifierProvider<Auth>.value(value: Auth()),
       ],
       //create: (context) => Products(),
       child: MaterialApp(
