@@ -77,9 +77,11 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> fetchAndSetProduct() async {
+  Future<void> fetchAndSetProduct([bool filterByUser = false]) async {
+    final filterString =
+        filterByUser ? '&orderBy="creatorId"&equalTo="$userId"' : '';
     final url =
-        'https://simpleshopping-613e3.firebaseio.com/products.json?auth=$authToken';
+        'https://simpleshopping-613e3.firebaseio.com/products.json?auth=$authToken$filterString';
     final favoriteUrl =
         'https://simpleshopping-613e3.firebaseio.com/userFavorite/$userId.json?auth=$authToken';
     try {
@@ -111,7 +113,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url =
-        'https://simpleshopping-613e3.firebaseio.com/products.json?auth=$authToken';
+        'https://simpleshopping-613e3.firebaseio.com/products.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"';
     try {
       final http.Response response = await http.post(url,
           body: json.encode({
@@ -119,6 +121,7 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
+            'creatorId': userId,
             //'isFavorite': product.isFavorite,
           }));
       final newProduct = Product(
