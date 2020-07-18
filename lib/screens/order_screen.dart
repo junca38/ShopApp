@@ -1,3 +1,4 @@
+import 'package:ShopApp/provider/auth.dart';
 import 'package:ShopApp/widgets/app_drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,12 +21,13 @@ class OrderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final orderData = context.watch<Orders>();
+    final token = Provider.of<Auth>(context, listen: false).token;
     return Scaffold(
       appBar: AppBar(title: Text('Your Orders')),
       drawer: AppDrawerWidget(),
       body: FutureBuilder(
-          future:
-              Provider.of<Orders>(context, listen: false).fetchAndSetOrder(),
+          future: Provider.of<Orders>(context, listen: false)
+              .fetchAndSetOrder(token),
           builder: (context, dataSnapShot) {
             if (dataSnapShot.connectionState == ConnectionState.waiting)
               return Center(child: CircularProgressIndicator());
