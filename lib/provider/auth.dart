@@ -57,6 +57,12 @@ class Auth with ChangeNotifier {
     } catch (e) {
       throw e;
     }
-    //print(jsonDecode(response.body));
+  }
+
+  void logout() {
+    _token = null;
+    _userId = null;
+    _expiryDate = null;
+    notifyListeners();
   }
 }
