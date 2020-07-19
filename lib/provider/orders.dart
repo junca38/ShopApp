@@ -25,14 +25,16 @@ class Orders with ChangeNotifier {
   }
 
   String authToken;
-  update(String auth, List<OrderItem> prevOrder) {
+  String userId;
+  update(String auth, List<OrderItem> prevOrder, String id) {
     authToken = auth;
     if (prevOrder != null) _orders = prevOrder;
+    userId = id;
   }
 
   Future<void> fetchAndSetOrder(String authToken) async {
     final url =
-        'https://simpleshopping-613e3.firebaseio.com/orders.json?auth=$authToken';
+        'https://simpleshopping-613e3.firebaseio.com/orders/$userId.json?auth=$authToken';
     final List<OrderItem> loadedOrder = [];
     final response = await http.get(url);
     final extractedData = jsonDecode(response.body) as Map<String, dynamic>;
