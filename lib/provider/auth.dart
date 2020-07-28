@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:ShopApp/models/http_exception.dart';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier {
   String _token;
@@ -57,12 +58,35 @@ class Auth with ChangeNotifier {
       );
       autoLogout();
       notifyListeners();
+      final prefs = await SharedPreferences.getInstance();
+      final userData = json.encode({
+        'token': _token,
+        'userId': _userId,
+        'expiryDate': _expiryDate.toIso8601String(),
+      });
+      prefs.setString('userData', userData);
     } catch (e) {
       throw e;
     }
   }
 
-  void logout() {
+  Future<bool> tryAutoLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userData')) return false;
+    final extractedUserData =
+        jsonDecode(prefs.getString('userData')) as Map<String, Object>;
+    final expirayDate = DateTime.parse(extractedUserData['expiryDate']);
+    if (expirayDate.isAfter(DateTime.now())) return false;
+    //auto login whe not expired
+    _token = extractedUserData['token'];
+    _userId = extractedUserData['userId'];
+    _expiryDate = expirayDate;
+    notifyListeners();
+    autoLogout();
+    return true;
+  }
+
+  Future<void> logout() async {
     _token = null;
     _userId = null;
     _expiryDate = null;
@@ -71,6 +95,10 @@ class Auth with ChangeNotifier {
       _authTimer = null;
     }
     notifyListeners();
+    //clear the shared Preference when logout
+    final prefs = await SharedPreferences.getInstance();
+    //prefs.clear(); this work too since we
+    prefs.remove('userData');
   }
 
   void autoLogout() {
