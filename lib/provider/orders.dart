@@ -33,6 +33,7 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> fetchAndSetOrder(String authToken) async {
+    print(userId);
     final url =
         'https://simpleshopping-613e3.firebaseio.com/orders/$userId.json?auth=$authToken';
     final List<OrderItem> loadedOrder = [];
@@ -60,7 +61,7 @@ class Orders with ChangeNotifier {
 
   Future<void> addOrder({List<CartItem> cartProducts, double total}) async {
     final url =
-        'https://simpleshopping-613e3.firebaseio.com/orders.json?auth=$authToken';
+        'https://simpleshopping-613e3.firebaseio.com/orders/$userId.json?auth=$authToken';
     final timestamp = DateTime.now();
     try {
       final http.Response response = await http.post(url,
