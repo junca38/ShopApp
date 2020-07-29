@@ -3,6 +3,7 @@ import 'package:ShopApp/screens/user_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ShopApp/provider/auth.dart';
+import 'package:ShopApp/helpers/custom_route.dart';
 
 class AppDrawerWidget extends StatelessWidget {
   @override
@@ -26,7 +27,9 @@ class AppDrawerWidget extends StatelessWidget {
               leading: Icon(Icons.payment),
               title: Text('Orders'),
               onTap: () => Navigator.of(context)
-                  .pushReplacementNamed(OrderScreen.routeName),
+                  //.pushReplacementNamed(OrderScreen.routeName),
+                  .pushReplacement(
+                      CustomRoute(builder: (context) => OrderScreen())),
             ),
             Divider(),
             ListTile(
