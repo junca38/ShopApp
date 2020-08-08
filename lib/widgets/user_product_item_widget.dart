@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ShopApp/provider/products.dart';
 
+/// custom widget to show the product in product owner screen to manage the product
 class UserProductItemWidget extends StatelessWidget {
   final String id;
   final String title;
@@ -12,6 +13,7 @@ class UserProductItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // for the use of snackbarwidget
     final scaffold = Scaffold.of(context);
     return ListTile(
       title: Text(title),
@@ -20,6 +22,7 @@ class UserProductItemWidget extends StatelessWidget {
         width: 100,
         child: Row(
           children: <Widget>[
+            /// go to product edit screen to mange the product detail
             IconButton(
               icon: Icon(Icons.edit),
               onPressed: () {
@@ -28,6 +31,8 @@ class UserProductItemWidget extends StatelessWidget {
               },
               color: Theme.of(context).primaryColor,
             ),
+
+            /// to remove the product from system
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () async {

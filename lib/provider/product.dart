@@ -19,10 +19,16 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
+  ///switching the state of flavorite of a product
+  /// 1.) handle it gracefully, by storing the orignal state
+  /// 2.) toggle the local state first
+  /// 3.) then update it on the database
+  /// 4.) if fail, then restore it to original state
   Future<void> toggleFavoriteStatus(String authToken, String userId) async {
     final storeFavorite = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
+
     final url =
         "https://simpleshopping-613e3.firebaseio.com/userFavorite/$userId/$id.json?auth=$authToken";
     try {

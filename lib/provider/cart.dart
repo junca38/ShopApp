@@ -15,7 +15,7 @@ class CartItem {
 }
 
 class Cart with ChangeNotifier {
-  //String is the ID, cart
+  /// String is the ID for particular cartItems
   Map<String, CartItem> _items = {};
 
   Map<String, CartItem> get items {
@@ -26,6 +26,7 @@ class Cart with ChangeNotifier {
     return _items.length;
   }
 
+  /// return the total price need to pay, by calculating price * quantity for each cart item
   double get totalAmount {
     double total = 0;
     _items.forEach((key, cartItem) {
@@ -34,7 +35,9 @@ class Cart with ChangeNotifier {
     return total;
   }
 
+  /// add item to the cart
   void addItem({String productId, double price, String title}) {
+    // update the amount if the item is already in the cart
     if (_items.containsKey(productId)) {
       _items.update(
         productId,
@@ -45,6 +48,7 @@ class Cart with ChangeNotifier {
             price: exisitingItem.price),
       );
     } else {
+      // else add a new entry
       _items.putIfAbsent(
         productId,
         () => CartItem(
@@ -62,8 +66,12 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
+  /// remove an item in cart
   void removeSingleItem(String productId) {
+    // ignore when it's not in the cart
     if (!_items.containsKey(productId)) return;
+
+    // lower the amount if it's more than 1
     if (_items[productId].quantity > 1)
       _items.update(
           productId,
@@ -73,11 +81,14 @@ class Cart with ChangeNotifier {
                 quantity: exisingItem.quantity - 1,
                 title: exisingItem.title,
               ));
-    else
+    else {
+      // completely remove it from cart when it reaches zero
       _items.remove(productId);
+    }
     notifyListeners();
   }
 
+  /// clear the cart
   void clear() {
     _items = {};
     notifyListeners();

@@ -9,6 +9,7 @@ import 'package:ShopApp/widgets/badge_widget.dart';
 
 enum FilterOptions { Favorites, All }
 
+/// main page, showing a list of products
 class ProductOverviewScreen extends StatefulWidget {
   static const routeName = '/product-overview';
 
@@ -35,6 +36,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
       appBar: AppBar(
         title: Text('My Shop App'),
         actions: <Widget>[
+          /// favorite button
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
               setState(() {
@@ -49,12 +51,14 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
               PopupMenuItem(child: Text('Show All'), value: FilterOptions.All),
             ],
           ),
-          //adding badge
+          //adding badge to display the product item
           Consumer<Cart>(
             builder: (_, cart, ch) => Badge(
               child: ch,
               value: cart.itemCount.toString(),
             ),
+
+            /// button to add item to cart
             child: IconButton(
               icon: Icon(Icons.shopping_cart),
               onPressed: () {

@@ -8,6 +8,7 @@ import 'package:ShopApp/models/http_exception.dart';
 
 enum AuthMode { Signup, Login }
 
+///display either login screen or sign up screen depends on the mode
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
 
@@ -135,6 +136,7 @@ class _AuthCardState extends State<AuthCard>
     _animationController.dispose();
   }
 
+  /// display info if HTTPException happened during submit
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
@@ -151,6 +153,7 @@ class _AuthCardState extends State<AuthCard>
     );
   }
 
+  /// call auth.dart to handle login logic
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
@@ -226,6 +229,8 @@ class _AuthCardState extends State<AuthCard>
             BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
+
+        // form to handle email password input
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -289,6 +294,7 @@ class _AuthCardState extends State<AuthCard>
                 if (_isLoading)
                   CircularProgressIndicator()
                 else
+                  //log in button or sign up button depends on the mode
                   RaisedButton(
                     child:
                         Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
@@ -301,6 +307,7 @@ class _AuthCardState extends State<AuthCard>
                     color: Theme.of(context).primaryColor,
                     textColor: Theme.of(context).primaryTextTheme.button.color,
                   ),
+                // display the switch button, switching beteen sign up mode or login mode
                 FlatButton(
                   child: Text(
                       '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),

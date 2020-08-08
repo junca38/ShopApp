@@ -4,6 +4,7 @@ import 'package:ShopApp/provider/cart.dart' show Cart;
 import 'package:ShopApp/widgets/cart_item_widget.dart';
 import 'package:ShopApp/provider/orders.dart';
 
+/// display the shoping cart screen
 class CartScreen extends StatelessWidget {
   static const String routeName = '/cart';
 
@@ -16,6 +17,7 @@ class CartScreen extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
+          ///display the amount have to pay
           Card(
             margin: EdgeInsets.all(15),
             child: Padding(
@@ -42,6 +44,7 @@ class CartScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10),
+          //display the list of items that are added to the cart
           Expanded(
             child: ListView.builder(
               itemCount: cart.itemCount,

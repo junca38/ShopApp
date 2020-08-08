@@ -24,6 +24,7 @@ class Orders with ChangeNotifier {
     return [..._orders];
   }
 
+  /// update method for proxyprovider
   String authToken;
   String userId;
   update(String auth, List<OrderItem> prevOrder, String id) {
@@ -32,6 +33,7 @@ class Orders with ChangeNotifier {
     userId = id;
   }
 
+  /// fetch orders from database
   Future<void> fetchAndSetOrder(String authToken) async {
     print(userId);
     final url =
@@ -40,6 +42,7 @@ class Orders with ChangeNotifier {
     final response = await http.get(url);
     final extractedData = jsonDecode(response.body) as Map<String, dynamic>;
     if (extractedData == null) return;
+    // add the item and related info to order list
     extractedData.forEach((orderId, orderData) {
       loadedOrder.add(OrderItem(
         id: orderId,
@@ -55,15 +58,18 @@ class Orders with ChangeNotifier {
             .toList(),
       ));
     });
+    // reverse the list so that it is in chronological order
     _orders = loadedOrder.reversed.toList();
     notifyListeners();
   }
 
+  /// add orders by giving a list of items
   Future<void> addOrder({List<CartItem> cartProducts, double total}) async {
     final url =
         'https://simpleshopping-613e3.firebaseio.com/orders/$userId.json?auth=$authToken';
     final timestamp = DateTime.now();
     try {
+      /// add to the database
       final http.Response response = await http.post(url,
           body: jsonEncode({
             'amount': total,
@@ -78,6 +84,8 @@ class Orders with ChangeNotifier {
                 .toList(),
           }));
       print(jsonDecode(response.body));
+
+      /// add to the local orders list
       _orders.insert(
           0,
           OrderItem(

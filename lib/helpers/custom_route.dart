@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// to handle single page custom animation transition
+/// to handle single page custom animation transition
 class CustomRoute<T> extends MaterialPageRoute<T> {
   CustomRoute({WidgetBuilder builder, RouteSettings settings})
       : super(builder: builder, settings: settings);
@@ -13,7 +13,7 @@ class CustomRoute<T> extends MaterialPageRoute<T> {
   }
 }
 
-// to handle all pages custom animation transition
+/// to handle all pages custom animation transition
 class CustomPageTransition extends PageTransitionsBuilder {
   @override
   Widget buildTransitions<T>(

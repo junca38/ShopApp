@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:ShopApp/provider/orders.dart';
 import 'package:ShopApp/widgets/order_item_widget.dart';
 
+/// screen to show pass orders
 class OrderScreen extends StatelessWidget {
   static const routeName = '/orders';
   //  bool _isLoading = false;
@@ -18,6 +19,9 @@ class OrderScreen extends StatelessWidget {
   //       .then((_) => setState(() => _isLoading = false));
   // }
 
+  /// get a list of pass order history
+  /// using future builder, wait to finish and return the future
+  /// once done, use listview.builder to build teh order list
   @override
   Widget build(BuildContext context) {
     //final orderData = context.watch<Orders>();

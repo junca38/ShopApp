@@ -5,6 +5,7 @@ import 'package:ShopApp/models/http_exception.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// auth class to handle logics: signup, login, logout, autologin, timeout
 class Auth with ChangeNotifier {
   String _token;
   DateTime _expiryDate;
@@ -36,6 +37,13 @@ class Auth with ChangeNotifier {
     return _authenticate(email, password, 'signInWithPassword');
   }
 
+  /// handle either login or sign up depends on the urlSeg string
+  /// https://firebase.google.com/docs/reference/rest/auth
+  /// check signup with email and password session
+  ///
+  /// 1.) connect to firebase to either login or signup with Json Data:
+  /// 2.) call autologout to start the timer
+  /// 3.) store the login status into shared pref
   Future<void> _authenticate(
       String email, String password, String urlSeg) async {
     final url =
@@ -56,8 +64,12 @@ class Auth with ChangeNotifier {
       _expiryDate = DateTime.now().add(
         Duration(seconds: int.parse(responseData['expiresIn'])),
       );
+
+      /// call auto logout to start the counter for auto logout
       autoLogout();
       notifyListeners();
+
+      ///store the login status in shared Preference
       final prefs = await SharedPreferences.getInstance();
       final userData = json.encode({
         'token': _token,
@@ -70,6 +82,10 @@ class Auth with ChangeNotifier {
     }
   }
 
+  /// handle auto login logic
+  /// 1.) check if it is in stored Preference, if so loads it
+  /// 2.) check if stored preference expired or not, if not restore the login status
+  /// 3.) call autologout to update the logout timer
   Future<bool> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userData')) return false;
@@ -86,7 +102,9 @@ class Auth with ChangeNotifier {
     return true;
   }
 
+  /// handle logout logic
   Future<void> logout() async {
+    print("logout is called");
     _token = null;
     _userId = null;
     _expiryDate = null;
@@ -97,10 +115,13 @@ class Auth with ChangeNotifier {
     notifyListeners();
     //clear the shared Preference when logout
     final prefs = await SharedPreferences.getInstance();
-    //prefs.clear(); this work too since we
+    //prefs.clear(); this work too since we are only storing one thing in shared pref
     prefs.remove('userData');
   }
 
+  /// handle the autologout logic
+  /// 1.) stop the timer if there is one
+  /// 2.) use Timer Function, given the time to expiry, it will call logout logic when timer reaches expiry
   void autoLogout() {
     if (_authTimer != null) _authTimer.cancel();
     final timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;

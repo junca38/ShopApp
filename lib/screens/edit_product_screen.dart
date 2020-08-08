@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+/// display the screen to edit product info
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product';
 
@@ -28,6 +29,45 @@ class _EditProductScreenState extends State<EditProductScreen> {
   bool _isInit = false;
   bool _isLoading = false;
 
+  @override
+  void initState() {
+    super.initState();
+    _imageUrlFocusNode.addListener(_updateImageUrl);
+  }
+
+  /// get the product info, and restore the value
+  /// only need to do it once before build context
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInit) {
+      _isInit = true;
+      final productId = ModalRoute.of(context).settings.arguments as String;
+      if (productId != null) {
+        _editedProduct = context.read<Products>().findById(productId);
+        _initValues = {
+          'title': _editedProduct.title,
+          'description': _editedProduct.description,
+          'price': _editedProduct.price.toString(),
+          //'imageUrl': _editedProduct.imageUrl,
+          'imageUrl': '',
+        };
+        _imageUrlController.text = _editedProduct.imageUrl;
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _priceFocusNode.dispose();
+    _descriptionFocusNode.dispose();
+    _imageUrlController.dispose();
+    _imageUrlFocusNode.removeListener(_updateImageUrl);
+    _imageUrlFocusNode.dispose();
+  }
+
+  /// when the url is entered and textfield is out of focus
   void _updateImageUrl() {
     if (!_imageUrlFocusNode.hasFocus) {
       if ((!_imageUrlController.text.startsWith('http://') &&
@@ -40,10 +80,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
+  /// save the info by calling products.update when the info is valid
   Future<void> _saveForm() async {
+    // validate the data
     final isValid = _form.currentState.validate();
     if (!isValid) return;
-    //only run the following when isValid
+    //only allow to run the following code when isValid
     _form.currentState.save();
     setState(() => _isLoading = true);
     if (_editedProduct.id != null) {
@@ -83,42 +125,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _imageUrlFocusNode.addListener(_updateImageUrl);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!_isInit) {
-      _isInit = true;
-      final productId = ModalRoute.of(context).settings.arguments as String;
-      if (productId != null) {
-        _editedProduct = context.read<Products>().findById(productId);
-        _initValues = {
-          'title': _editedProduct.title,
-          'description': _editedProduct.description,
-          'price': _editedProduct.price.toString(),
-          //'imageUrl': _editedProduct.imageUrl,
-          'imageUrl': '',
-        };
-        _imageUrlController.text = _editedProduct.imageUrl;
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _priceFocusNode.dispose();
-    _descriptionFocusNode.dispose();
-    _imageUrlController.dispose();
-    _imageUrlFocusNode.removeListener(_updateImageUrl);
-    _imageUrlFocusNode.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -135,6 +141,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 key: _form,
                 child: ListView(
                   children: <Widget>[
+                    //title
                     TextFormField(
                       decoration: InputDecoration(labelText: 'Title'),
                       textInputAction: TextInputAction.next,
@@ -156,6 +163,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         return null;
                       },
                     ),
+
+                    ///price
                     TextFormField(
                       decoration: InputDecoration(labelText: 'Price'),
                       initialValue: _initValues['price'],
@@ -183,6 +192,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         return null;
                       },
                     ),
+
+                    /// description
                     TextFormField(
                       decoration: InputDecoration(labelText: 'Description'),
                       initialValue: _initValues['description'],
@@ -204,6 +215,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         return null;
                       },
                     ),
+
+                    /// image
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[

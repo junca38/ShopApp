@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       //create: (context) => Products(),
       child: Consumer<Auth>(
         builder: (context, authData, _) => MaterialApp(
-          title: 'MyShop',
+          title: 'Shop the Cat',
           theme: ThemeData(
             primarySwatch: Colors.purple,
             accentColor: Colors.deepOrange,

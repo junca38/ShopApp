@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ShopApp/provider/cart.dart';
 
+/// custom widget to display items in cart screen
 class CartItemWidget extends StatelessWidget {
   final String id;
   final String productId;
@@ -14,10 +15,12 @@ class CartItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ///swip left to remove a product item from the cart list
     return Dismissible(
       key: ValueKey(id),
       direction: DismissDirection.endToStart,
       confirmDismiss: (direction) {
+        /// dialog to confirm if user want to remove the item from the cart
         return showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
@@ -44,6 +47,8 @@ class CartItemWidget extends StatelessWidget {
         padding: EdgeInsets.only(right: 20),
         margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
       ),
+
+      /// card to display a particular product's info and quantity in shopping cart
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         child: Padding(

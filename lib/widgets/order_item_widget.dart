@@ -3,6 +3,7 @@ import 'package:ShopApp/provider/orders.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
 
+/// widget that display a partiuclar order history
 class OrderItemWidget extends StatefulWidget {
   final OrderItem order;
   OrderItemWidget({this.order});
@@ -20,6 +21,8 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
       duration: Duration(milliseconds: 300),
       height:
           _expanded ? min(widget.order.products.length * 20.0 + 110, 200) : 95,
+
+      /// show a particular transaction history about total amount and time
       child: Card(
         margin: EdgeInsets.all(10),
         child: Column(
@@ -37,6 +40,8 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                 },
               ),
             ),
+
+            /// show detail about that transaction: the name of the time and total price
             AnimatedContainer(
               duration: Duration(milliseconds: 300),
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),

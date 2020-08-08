@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// custom widget to display a product in the main page
 class Badge extends StatelessWidget {
   const Badge({
     Key key,

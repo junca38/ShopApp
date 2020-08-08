@@ -4,6 +4,7 @@ import 'package:ShopApp/provider/products.dart';
 import 'package:provider/provider.dart';
 import 'package:ShopApp/provider/product.dart';
 
+/// organize the product as grid and display at the main page
 class ProductGridWidget extends StatelessWidget {
   final bool showFavorites;
 
@@ -23,6 +24,8 @@ class ProductGridWidget extends StatelessWidget {
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
+
+      /// getting the list of products from provider and call productItemWidget to display a product
       itemBuilder: (context, index) => ChangeNotifierProvider<Product>.value(
         value: products[index],
         child: ProductItemWidget(
