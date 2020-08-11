@@ -1,16 +1,31 @@
 # ShopApp
 
-A new Flutter project.
+## Info
 
-## Getting Started
+A shopping app that has the following functions:
 
-This project is a starting point for a Flutter application.
+1. User can create account and login via email and password
+1. Owners can publish their products and manage their own products
+1. User can add products as their favorite
+1. User can add products to shopping cart and purchase it
+1. User can check their purchase history
 
-A few resources to get you started if this is your first Flutter project:
+## How to use:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- Require API key in auth.dart
+- Used custom font: Lato, Anton, and should be in assets/fonts folder
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Tech Highlight:
+
+1. Provider v4
+   - for state management
+1. FireBase
+   - backend database to store data, such as login info, products detail, purchase records
+   - handle login autheication
+   - handle restriction on views, such as product ownership and purchase records
+1. HTTP package
+   - to establish connections to Firebase
+1. Shared Preference
+   - storing login token and expirary time locally
+1. Simple Animation
+   - For page Transition
