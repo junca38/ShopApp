@@ -4,9 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:ShopApp/models/http_exception.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ShopApp/helpers/Constants.dart';
 
 /// auth class to handle logics: signup, login, logout, autologin, timeout
 class Auth with ChangeNotifier {
+  String _apiKey = Constants.kAPIKey;
   String _token;
   DateTime _expiryDate;
   String _userId;
@@ -41,13 +43,13 @@ class Auth with ChangeNotifier {
   /// https://firebase.google.com/docs/reference/rest/auth
   /// check signup with email and password session
   ///
-  /// 1.) connect to firebase to either login or signup with Json Data:
+  /// 1.) connect to firebase to either login or signup
   /// 2.) call autologout to start the timer
   /// 3.) store the login status into shared pref
   Future<void> _authenticate(
       String email, String password, String urlSeg) async {
     final url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:$urlSeg?key=AIzaSyAyVX-Wf9vZqd-a5cuAZWHUBVUGlByWZ_k";
+        "https://identitytoolkit.googleapis.com/v1/accounts:$urlSeg?key=$_apiKey";
     try {
       final response = await http.post(url,
           body: jsonEncode({
@@ -83,8 +85,8 @@ class Auth with ChangeNotifier {
   }
 
   /// handle auto login logic
-  /// 1.) check if it is in stored Preference, if so loads it
-  /// 2.) check if stored preference expired or not, if not restore the login status
+  /// 1.) check if it is in sharedPreference, if so loads it
+  /// 2.) check if sharedpreference expired or not, if not restore the login status
   /// 3.) call autologout to update the logout timer
   Future<bool> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();

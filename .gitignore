@@ -44,3 +44,4 @@ app.*.map.json
 assets/fonts/Anton-Regular.ttf
 assets/fonts/Lato-Bold.ttf
 assets/fonts/Lato-Regular.ttf
+lib/helpers/Constants.dart
