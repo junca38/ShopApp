@@ -120,6 +120,7 @@ class Products with ChangeNotifier {
   Future<void> addProduct(Product product) async {
     final url =
         'https://simpleshopping-613e3.firebaseio.com/products.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"';
+    print("addproduct: $userId");
     try {
       final http.Response response = await http.post(url,
           body: json.encode({
