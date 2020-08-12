@@ -7,8 +7,12 @@ A shopping app that has the following functions:
 1. User can create account and login via email and password
 1. Owners can publish their products and manage their own products
 1. User can add products as their favorite
-1. User can add products to shopping cart and purchase it
+1. User can add products to shopping cart and make purchases
 1. User can check their purchase history
+
+## Demo
+
+https://youtu.be/7mcA9c5Deno
 
 ## How to use:
 
