@@ -63,6 +63,7 @@ class Auth with ChangeNotifier {
       }
       _token = responseData['idToken'];
       _userId = responseData['localId'];
+      print("userid: $_userId");
       _expiryDate = DateTime.now().add(
         Duration(seconds: int.parse(responseData['expiresIn'])),
       );

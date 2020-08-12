@@ -14,7 +14,9 @@ class UserProductScreen extends StatelessWidget {
 
   /// call the logics to get and refresh the list of products
   Future<void> _refreshProducts(BuildContext context) async {
-    await context.read<Products>().fetchAndSetProduct(true);
+    //await context.read<Products>().fetchAndSetProduct(true);
+    await Provider.of<Products>(context, listen: false)
+        .fetchAndSetProduct(true);
   }
 
   @override
